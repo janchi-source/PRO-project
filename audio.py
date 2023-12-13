@@ -1,5 +1,6 @@
 class Audio:
     def __init__(self, song_path):
+        global temp_f
         self.song_path = song_path
         temp_list = song_path.split('/')
         temp = temp_list[2].split('.')
@@ -28,4 +29,3 @@ objects = create_audio_objects(path_path)
 file_paths = []
 
 audio_objects = [Audio(path) for path in file_paths]
-

@@ -1,2 +1,3 @@
-artist:Tublatanka
-Album:Skusime to cez vesmir
+artist;Tublatanka
+album;Skusime to cez vesmir
+duration;5:35
