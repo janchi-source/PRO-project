@@ -1,3 +1,4 @@
-artist;Tublatanka
-album;Skusime to cez vesmir
+publisher;Tublatanka
+dateofpublishing;1.1.1999
 duration;5:32
+album;Skusime to cez vesmir
