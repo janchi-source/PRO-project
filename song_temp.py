@@ -2,10 +2,13 @@ from audio import Audio
 
 class Song(Audio):
     def __init__(self, publisher, date, duration, path):
-        super().__init__(path)
-        self.author = publisher
+        super().__init__(publisher, date, duration)
+        self.path = path
+
+        self.autor = publisher
         self.duration = duration
         self.date = date
+        self.extract_data()
 
     def extract_data(self):
         temp_list = self.path.split('/')
@@ -17,4 +20,5 @@ class Song(Audio):
 
         print(self.album)
 
-path_path = "database/paths.txt"
+
+s = Song(path = "database/aaac.txt")
