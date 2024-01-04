@@ -5,8 +5,6 @@ from pygame import mixer
 from tkinter import *
 import tkinter.font as font
 from tkinter import filedialog
-# def play(path):
-#     ws.PlaySound(path, ws.SND_FILENAME)
 
 def create_audio_objects(path_path):
     with open(path_path, 'r') as paths_file:
@@ -20,11 +18,9 @@ def Play(audio):
     mixer.music.load(song)
     mixer.music.play()
 
-#to pause the song 
 def Pause():
     mixer.music.pause()
 
-#to stop the  song 
 # def Stop():
 #     mixer.music.stop()
 #     songs_list.selection_clear(ACTIVE)
