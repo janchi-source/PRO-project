@@ -1,4 +1,5 @@
 publisher;Tublatanka
+name;Vo velkej skole dni
 dateofpublishing;1.1.1999
 duration;5:32
 album;Skusime to cez vesmir

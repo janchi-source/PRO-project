@@ -1,4 +1,5 @@
 publisher;Tublatanka
+name;Dotyk rúžom na pohár
 dateofpublishing;1.1.1999
 duration;5:35
 album;Skusime to cez vesmir

@@ -1,4 +1,5 @@
 publisher;Tublatanka
+name;Skusime to cez vesmir
 dateofpublishing;1.1.1999
 duration;5:15
 album;Skusime to cez vesmir
