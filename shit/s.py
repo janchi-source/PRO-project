@@ -1,0 +1,31 @@
+def create_audio_objects(path_path):
+    with open(path_path, 'r') as paths_file:
+        file_paths = paths_file.read().splitlines()
+    
+    audio_objects = [Audio(path) for path in file_paths]
+    return audio_objects
+
+
+def create_audio_objects(path_path):
+    with open(path_path, 'r') as paths_file:
+        file_paths = paths_file.read().splitlines()
+    audio_objects = [Audio(path) for path in file_paths]
+    return audio_objects
+
+# def Play():
+#     song = audio.get(ACTIVE)
+#     song = f'database/{song}'
+#     mixer.music.load(song)
+#     mixer.music.play()
+
+# def Pause(): 
+#     mixer.music.pause()
+
+# def Stop():
+#     mixer.music.stop()
+#     songs_list.selection_clear(ACTIVE)
+
+
+# def Resume():
+#     mixer.music.unpause()
+
