@@ -1,0 +1,5 @@
+publisher;Crystal Castles
+name;Year of Silence
+dateofpublishing;2010
+duration;4:54
+album;II

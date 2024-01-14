@@ -1,0 +1,5 @@
+publisher;Crystal Castles
+name;Fainting Spells
+dateofpublishing;2010
+duration;2:44
+album;II

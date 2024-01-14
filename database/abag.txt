@@ -1,0 +1,5 @@
+publisher;Crystal Castles
+name;Suffocation
+dateofpublishing;2010
+duration;4:03
+album;II

@@ -1,0 +1,5 @@
+publisher;Crystal Castles
+name;Violent Dreams
+dateofpublishing;2010
+duration;4:36
+album;II

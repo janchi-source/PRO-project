@@ -1,65 +1,69 @@
-from audio import Audio
-from song import Song
-import functions as f
-from pygame import mixer
-from tkinter import *
-import tkinter.font as font
-from tkinter import filedialog
-
-path_path = "database/paths.txt"
-audio_objects = f.create_audio_objects(path_path)
-
-print(audio_objects)
-
-root=Tk()
-root.title('DataFlair Music player App ')
-#initialize mixer 
-mixer.init()
-
-#create the listbox to contain songs
-songs_list=Listbox(root,selectmode=SINGLE,bg = "black",fg = "white",font = ('arial',15),height = 12,width = 47,selectbackground = "gray",selectforeground = "black")
-songs_list.grid(columnspan=9)
-
-#font is defined which is to be used for the button font 
-defined_font = font.Font(family = 'Helvetica')
-
-#play button
-play_button = Button(root,text = "Play",width = 7,command = f.Play)
-play_button['font'] = defined_font
-play_button.grid(row = 1,column = 0)
-
-#pause button 
-pause_button = Button(root,text = "Pause",width = 7,command = f.Pause)
-pause_button['font'] = defined_font
-pause_button.grid(row = 1,column = 1)
-
-#stop button
-# stop_button=Button(root,text="Stop",width =7,command=f.Stop)
-# stop_button['font']=defined_font
-# stop_button.grid(row=1,column=2)
-
-#resume button
-Resume_button = Button(root,text="Resume",width = 7,command = f.Resume)
-Resume_button['font'] = defined_font
-Resume_button.grid(row = 1,column = 3)
-
-# #previous button
-# previous_button=Button(root,text="Prev",width =7,command=f.Previous)
-# previous_button['font']=defined_font
-# previous_button.grid(row=1,column=4)
-
-# #nextbutton
-# next_button=Button(root,text="Next",width =7,command=f.Next)
-# next_button['font']=defined_font
-# next_button.grid(row=1,column=5)
-
-#menu 
-my_menu = Menu(root)
-root.config(menu = my_menu)
-add_song_menu=Menu(my_menu)
-# my_menu.add_cascade(label="Menu",menu=add_song_menu)
-# add_song_menu.add_command(label="Add songs",command=f.addsongs)
-# add_song_menu.add_command(label="Delete song",command=f.deletesong)
+import tkinter as tk
+import pygame
 
 
-mainloop()
+a = 1
+def on_play_click(event):
+    global a
+    item = c.find_withtag("current")[0]
+
+    if item == play and a == 1:
+        print("play")
+        c.itemconfig(item, fill="lime green")
+        a = -1
+        play_music()
+    elif item == play and a == -1:
+        print("pause")
+        c.itemconfig(item, fill="light grey")
+        a = 1
+        pygame.mixer.music.pause()
+
+def on_prev_click(event):
+    print("previous")
+
+def on_next_click(event):
+    print("next")
+
+def on_sound_button_click():
+    sound_file = "suka-blyat-made-with-Voicemod-technology.mp3"  
+    pygame.mixer.music.load(sound_file)
+    print("Sound loaded")
+
+def play_music():
+    pygame.mixer.music.play()
+
+def on_search_click():
+    search_query = entry_search.get()
+    print("Search:", search_query)
+
+root = tk.Tk()
+
+c = tk.Canvas(root, width=800, height=600, background="#191414")
+c.pack()
+
+c.create_rectangle(0, 0, 820, 60, fill="grey", outline="black")
+c.create_rectangle(0, 540, 820, 610, fill="grey")
+play = c.create_oval(375, 545, 425, 595, fill="light grey", width=4, outline="black")
+prev_button = c.create_oval(345, 557, 370, 582, fill='light grey', width=3, outline='black')
+next_button = c.create_oval(432, 557, 457, 582, fill='light grey', width=3, outline="black")
+
+# Tlačítko pro přehrávání zvuku
+sound_button = tk.Button(root, text="Play Sound", command=on_sound_button_click)
+sound_button.place(relx=0.5, rely=0.5, anchor="center")
+
+# Vyhledávací pole v levém horním rohu
+entry_search = tk.Entry(root, width=20)
+entry_search.place(x=10, y=10)
+
+# Nastavení pygame pro přehrávání zvuku
+pygame.mixer.init()
+
+c.tag_bind(play, '<ButtonPress-1>', on_play_click)
+c.tag_bind(prev_button, '<ButtonPress-1>', on_prev_click)
+c.tag_bind(next_button, '<ButtonPress-1>', on_next_click)
+
+# Tlačítko pro spuštění vyhledávání
+search_button = tk.Button(root, text="Search", command=on_search_click)
+search_button.place(x=150, y=10)
+
+root.mainloop()

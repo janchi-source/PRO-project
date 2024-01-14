@@ -12,7 +12,7 @@ def create_audio_objects(path_path):
     audio_objects = [Audio(path) for path in file_paths]
     return audio_objects
 
-def Play(audio):
+def Play():
     song = audio.get(ACTIVE)
     song = f'database/{song}'
     mixer.music.load(song)
@@ -25,7 +25,6 @@ def Pause():
 #     mixer.music.stop()
 #     songs_list.selection_clear(ACTIVE)
 
-#to resume the song
 
 def Resume():
     mixer.music.unpause()

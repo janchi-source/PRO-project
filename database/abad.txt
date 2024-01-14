@@ -1,0 +1,5 @@
+publisher;Crystal Castles
+name;Empathy
+dateofpublishing;2010
+duration;4:12
+album;II
