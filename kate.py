@@ -167,9 +167,9 @@ class Albums(Audio):
         c.mainloop()
 
 ##all you need to use this album 
-spotify = Albums()
-spotify.create_album()
-spotify.draw_album()
+# spotify = Albums()
+# spotify.create_album()
+# spotify.draw_album()
 
 ###PLEASE DONT USE THE DIACRITICS IN THE NAMES OF THE SONGS
 

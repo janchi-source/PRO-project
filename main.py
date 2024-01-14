@@ -4,11 +4,17 @@ from tkinter import filedialog, ttk
 from pygame import mixer
 # from functions import *
 # import functions as f
+from kate import *
 
 root = tkinter.Tk()
 root.title("Music Player")
 
 mixer.init()
+
+
+albums = Albums()
+albums.create_album()
+
 
 playlist = []
 
