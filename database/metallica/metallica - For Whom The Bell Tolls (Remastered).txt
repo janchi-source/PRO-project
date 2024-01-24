@@ -1,0 +1,5 @@
+publisher;Metallica
+name;For Whom The Bell Tolls
+dateofpublishing;26.6.1984
+duration;5:09
+album;Ride the Lightning

@@ -1,65 +1,127 @@
-from audio import Audio
-from song import Song
-import functions as f
-from pygame import mixer
 from tkinter import *
-import tkinter.font as font
-from tkinter import filedialog
+import tkinter as tk
+from tkinter import ttk, filedialog
+from pygame import mixer
+import os
 
-path_path = "database/paths.txt"
-audio_objects = f.create_audio_objects(path_path)
+class Button(Button):
+    def __init__(self, root, image_path, command):
+        self.img = PhotoImage(file=image_path).subsample(3)
+        super().__init__(root, image=self.img, bg="#0f1a2b", command=command)
 
-print(audio_objects)
+def load_artist_songs(artist_folder):
+    global ar_f
+    ar_f = artist_folder
+    playlist_box.delete(0, tk.END)
+    artist_folder_path = os.path.join("database", artist_folder)
+    
+    if os.path.exists(artist_folder_path) and os.path.isdir(artist_folder_path):
+        songs = [f for f in os.listdir(artist_folder_path) if f.lower().endswith('.mp3') and os.path.isfile(os.path.join(artist_folder_path, f))]
+        for song in songs:
+            playlist_box.insert(tk.END, song)
+    else:
+        playlist_box.insert(tk.END, "Folder not found")
 
-root=Tk()
-root.title('DataFlair Music player App ')
-#initialize mixer 
+def extract_data(current_song_name):
+    path = os.path.join("database", ar_f, f"{current_song_name}.txt")
+
+    with open(path) as temp_read:
+        publisher = temp_read.readline().split(';')[1].split('\n')[0]
+        title = temp_read.readline().split(';')[1].split('\n')[0]
+        date = temp_read.readline().split(';')[1].split('\n')[0]
+        duration = temp_read.readline().split(';')[1].split('\n')[0]
+        album = temp_read.readline().split(';')[1].split('\n')[0]
+
+    info_label.config(text=f"Publisher: {publisher}\nTitle: {title}\nDate: {date}\nDuration: {duration} seconds\nAlbum: {album}\n")
+
+def on_song_select(event):
+    selected_index = playlist_box.curselection()
+    if selected_index:
+        selected_song = playlist_box.get(selected_index)
+        extract_data(selected_song)
+
+def play_music():
+    global current_song_name
+    selected_song = playlist_box.get(tk.ACTIVE)
+    if selected_song:
+        current_song_name = selected_song
+        artist = selected_song.split(" ")[0]
+        song_path = os.path.join("database", artist, selected_song)
+        mixer.music.load(song_path)
+        mixer.music.play()
+
+def pause_music():
+    if mixer.music.get_busy():
+        mixer.music.pause()
+
+def stop_music():
+    mixer.music.stop()
+
+def next_music():
+    current_index = playlist_box.curselection()
+    next_index = current_index[0] + 1 if current_index else 0
+    if next_index < playlist_box.size():
+        playlist_box.selection_clear(0, tk.END)
+        playlist_box.selection_set(next_index)
+        play_music()
+
+def prev_music():
+    current_index = playlist_box.curselection()
+    prev_index = current_index[0] - 1 if current_index else 0
+    if prev_index >= 0:
+        playlist_box.selection_clear(0, tk.END)
+        playlist_box.selection_set(prev_index)
+        play_music()
+
+root = Tk()
+root.title("<#")
+root.geometry("900x600")
+root.configure(bg="#0f1a2b")
+root.resizable(False, False)
+
 mixer.init()
 
-#create the listbox to contain songs
-songs_list=Listbox(root,selectmode=SINGLE,bg="black",fg="white",font=('arial',15),height=12,width=47,selectbackground="gray",selectforeground="black")
-songs_list.grid(columnspan=9)
+logo_img = PhotoImage(file="img/logo.png")
+root.iconphoto(False, logo_img)
+bgrnd = PhotoImage(file="img/bgrnd.png").subsample(3)
+Label(root, image=bgrnd).pack()
 
-#font is defined which is to be used for the button font 
-defined_font = font.Font(family='Helvetica')
+info_label = Label(root, text="", font=("Helvetica", 14), bg="#0f1a2b", fg="white")
+info_label.place(x=10, y=450, width=400, height=100)
 
-#play button
-play_button=Button(root,text="Play",width =7,command=f.Play)
-play_button['font']=defined_font
-play_button.grid(row=1,column=0)
+# instances of buttons
+tublatanka_btn = Button(root, "img/tublatanka.png", lambda: load_artist_songs("tublatanka"))
+metallica_btn = Button(root, "img/metallica.png", lambda: load_artist_songs("metallica"))
+gunsnroses_btn = Button(root, "img/gunsnroses.png", lambda: load_artist_songs("gunsnroses"))
+radiohead_btn = Button(root, "img/radiohead.png", lambda: load_artist_songs("radiohead"))
+rhchp_btn = Button(root, "img/rhchp.png", lambda: load_artist_songs("rhchp"))
 
-#pause button 
-pause_button=Button(root,text="Pause",width =7,command=f.Pause)
-pause_button['font']=defined_font
-pause_button.grid(row=1,column=1)
+# placing buttons
+tublatanka_btn.place(x=800, y=100)
+metallica_btn.place(x=800, y=200)
+gunsnroses_btn.place(x=800, y=300)
+radiohead_btn.place(x=800, y=400)
+rhchp_btn.place(x=800, y=500)
 
-#stop button
-# stop_button=Button(root,text="Stop",width =7,command=f.Stop)
-# stop_button['font']=defined_font
-# stop_button.grid(row=1,column=2)
-
-#resume button
-Resume_button=Button(root,text="Resume",width =7,command=f.Resume)
-Resume_button['font']=defined_font
-Resume_button.grid(row=1,column=3)
-
-# #previous button
-# previous_button=Button(root,text="Prev",width =7,command=f.Previous)
-# previous_button['font']=defined_font
-# previous_button.grid(row=1,column=4)
-
-# #nextbutton
-# next_button=Button(root,text="Next",width =7,command=f.Next)
-# next_button['font']=defined_font
-# next_button.grid(row=1,column=5)
-
-#menu 
-my_menu=Menu(root)
-root.config(menu=my_menu)
-add_song_menu=Menu(my_menu)
-# my_menu.add_cascade(label="Menu",menu=add_song_menu)
-# add_song_menu.add_command(label="Add songs",command=f.addsongs)
-# add_song_menu.add_command(label="Delete song",command=f.deletesong)
+playlist_box = tk.Listbox(root, selectbackground="light grey", selectmode=tk.SINGLE)
+playlist_box.place(x=10, y=10, width=400, height=400)
 
 
-mainloop()
+play_btn = Button(root, "img/play.png", play_music)
+play_btn.place(x=505, y=10)
+
+pause_btn = Button(root, "img/pause.png", pause_music)
+pause_btn.place(x=605, y=10)
+
+stop_btn = Button(root, "img/stop.png", stop_music)
+stop_btn.place(x=705, y=10)
+
+next_btn = Button(root, "img/forward.png", next_music)
+next_btn.place(x=705, y=10)
+
+prev_btn = Button(root, "img/backward.png", prev_music)
+prev_btn.place(x=805, y=10)
+
+playlist_box.bind("<ButtonRelease-1>", on_song_select)
+
+root.mainloop()
