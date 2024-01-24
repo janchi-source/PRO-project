@@ -1,0 +1,5 @@
+publisher;Metallica
+name;Escape
+dateofpublishing;26.6.1984
+duration;4:23
+album;Ride the Lightning

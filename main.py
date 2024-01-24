@@ -1,96 +1,127 @@
-import os
-import tkinter
-from tkinter import filedialog, ttk
+from tkinter import *
+import tkinter as tk
+from tkinter import ttk, filedialog
 from pygame import mixer
-# from functions import *
-# import functions as f
-from kate import *
+import os
 
-root = tkinter.Tk()
-root.title("Music Player")
+class Button(Button):
+    def __init__(self, root, image_path, command):
+        self.img = PhotoImage(file=image_path).subsample(3)
+        super().__init__(root, image=self.img, bg="#0f1a2b", command=command)
+
+def load_artist_songs(artist_folder):
+    global ar_f
+    ar_f = artist_folder
+    playlist_box.delete(0, tk.END)
+    artist_folder_path = os.path.join("database", artist_folder)
+    
+    if os.path.exists(artist_folder_path) and os.path.isdir(artist_folder_path):
+        songs = [f for f in os.listdir(artist_folder_path) if f.lower().endswith('.mp3') and os.path.isfile(os.path.join(artist_folder_path, f))]
+        for song in songs:
+            playlist_box.insert(tk.END, song)
+    else:
+        playlist_box.insert(tk.END, "Folder not found")
+
+def extract_data(current_song_name):
+    path = os.path.join("database", ar_f, f"{current_song_name}.txt")
+
+    with open(path) as temp_read:
+        publisher = temp_read.readline().split(';')[1].split('\n')[0]
+        title = temp_read.readline().split(';')[1].split('\n')[0]
+        date = temp_read.readline().split(';')[1].split('\n')[0]
+        duration = temp_read.readline().split(';')[1].split('\n')[0]
+        album = temp_read.readline().split(';')[1].split('\n')[0]
+
+    info_label.config(text=f"Publisher: {publisher}\nTitle: {title}\nDate: {date}\nDuration: {duration} seconds\nAlbum: {album}\n")
+
+def on_song_select(event):
+    selected_index = playlist_box.curselection()
+    if selected_index:
+        selected_song = playlist_box.get(selected_index)
+        extract_data(selected_song)
+
+def play_music():
+    global current_song_name
+    selected_song = playlist_box.get(tk.ACTIVE)
+    if selected_song:
+        current_song_name = selected_song
+        artist = selected_song.split(" ")[0]
+        song_path = os.path.join("database", artist, selected_song)
+        mixer.music.load(song_path)
+        mixer.music.play()
+
+def pause_music():
+    if mixer.music.get_busy():
+        mixer.music.pause()
+
+def stop_music():
+    mixer.music.stop()
+
+def next_music():
+    current_index = playlist_box.curselection()
+    next_index = current_index[0] + 1 if current_index else 0
+    if next_index < playlist_box.size():
+        playlist_box.selection_clear(0, tk.END)
+        playlist_box.selection_set(next_index)
+        play_music()
+
+def prev_music():
+    current_index = playlist_box.curselection()
+    prev_index = current_index[0] - 1 if current_index else 0
+    if prev_index >= 0:
+        playlist_box.selection_clear(0, tk.END)
+        playlist_box.selection_set(prev_index)
+        play_music()
+
+root = Tk()
+root.title("<#")
+root.geometry("900x600")
+root.configure(bg="#0f1a2b")
+root.resizable(False, False)
 
 mixer.init()
 
+logo_img = PhotoImage(file="img/logo.png")
+root.iconphoto(False, logo_img)
+bgrnd = PhotoImage(file="img/bgrnd.png").subsample(3)
+Label(root, image=bgrnd).pack()
 
-albums = Albums()
-albums.create_album()
+info_label = Label(root, text="", font=("Helvetica", 14), bg="#0f1a2b", fg="white")
+info_label.place(x=10, y=450, width=400, height=100)
 
+# instances of buttons
+tublatanka_btn = Button(root, "img/tublatanka.png", lambda: load_artist_songs("tublatanka"))
+metallica_btn = Button(root, "img/metallica.png", lambda: load_artist_songs("metallica"))
+gunsnroses_btn = Button(root, "img/gunsnroses.png", lambda: load_artist_songs("gunsnroses"))
+radiohead_btn = Button(root, "img/radiohead.png", lambda: load_artist_songs("radiohead"))
+rhchp_btn = Button(root, "img/rhchp.png", lambda: load_artist_songs("rhchp"))
 
-playlist = []
+# placing buttons
+tublatanka_btn.place(x=800, y=100)
+metallica_btn.place(x=800, y=200)
+gunsnroses_btn.place(x=800, y=300)
+radiohead_btn.place(x=800, y=400)
+rhchp_btn.place(x=800, y=500)
 
-i = 0
-def play():
-    if playlist:
-        current_song = playlist[0]
-        mixer.music.load(current_song["paths"][i])
-        mixer.music.play()
-
-def on_prev_click():
-    current_song_index = playlist.curselection()
-    if current_song_index:
-        prev_index = (current_song_index[0] - 1) % len(playlist)
-        playlist_box.selection_clear(0, tkinter.END)
-        playlist_box.selection_set(prev_index)
-        playlist_box.activate(prev_index)
-        play()
-        i -= 1
-
-def on_next_click():
-    current_song_index = playlist_box.curselection()
-    if current_song_index:
-        next_index = (current_song_index[0] + 1) % len(playlist)
-        playlist_box.selection_clear(0, tkinter.END)
-        playlist_box.selection_set(next_index)
-        playlist_box.activate(next_index)
-        play()
-        i += 1
-
-def on_search_click():
-    folder_path = filedialog.askdirectory(title="Select Music Folder")
-    if folder_path:
-        load_songs_from_folder(folder_path)
-
-def load_songs_from_folder(folder_path):
-    try:
-        global playlist
-        playlist = []
-
-        for file_name in os.listdir(folder_path):
-            if file_name.lower().endswith(('.mp3', '.wav', '.ogg')):
-                song_path = os.path.join(folder_path, file_name)
-                playlist.append({"name": file_name, "paths": [song_path]})
-
-        playlist_box.delete(0, tkinter.END)
-        for song_info in playlist:
-            playlist_box.insert(tkinter.END, song_info["name"])
-    except Exception as e:
-        tkinter.messagebox.showerror("Error", f"Error loading songs from folder: {str(e)}")
+playlist_box = tk.Listbox(root, selectbackground="light grey", selectmode=tk.SINGLE)
+playlist_box.place(x=10, y=10, width=400, height=400)
 
 
+play_btn = Button(root, "img/play.png", play_music)
+play_btn.place(x=505, y=10)
 
+pause_btn = Button(root, "img/pause.png", pause_music)
+pause_btn.place(x=605, y=10)
 
-c = tkinter.Canvas(root, width=800, height=600, background="#191414")
-c.pack()
+stop_btn = Button(root, "img/stop.png", stop_music)
+stop_btn.place(x=705, y=10)
 
-c.create_rectangle(0, 0, 820, 60, fill="grey", outline="black")
-c.create_rectangle(0, 540, 820, 610, fill="grey")
-play_button = c.create_oval(375, 545, 425, 595, fill="light grey", width=4, outline="black")
-prev_button = c.create_oval(345, 557, 370, 582, fill='light grey', width=3, outline='black')
-next_button = c.create_oval(432, 557, 457, 582, fill='light grey', width=3, outline="black")
+next_btn = Button(root, "img/forward.png", next_music)
+next_btn.place(x=705, y=10)
 
-sound_button = tkinter.Button(root, text="Play Sound", command=play)
-sound_button.place(relx=0.5, rely=0.5, anchor="center")
+prev_btn = Button(root, "img/backward.png", prev_music)
+prev_btn.place(x=805, y=10)
 
-entry_search = tkinter.Entry(root, width=20)
-entry_search.place(x=10, y=10)
-
-search_button = tkinter.Button(root, text="Load Songs From Folder", command=on_search_click)
-search_button.place(x=150, y=10)
-
-playlist_box = tkinter.Listbox(root, selectbackground="light grey", selectmode=tkinter.SINGLE)
-playlist_box.place(x=10, y=60, width=780, height=470)
-
-c.tag_bind(prev_button, '<ButtonPress-1>', lambda event: on_prev_click())
-c.tag_bind(next_button, '<ButtonPress-1>', lambda event: on_next_click())
+playlist_box.bind("<ButtonRelease-1>", on_song_select)
 
 root.mainloop()

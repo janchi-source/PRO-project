@@ -1,5 +1,0 @@
-publisher;Crystal Castles
-name;Intimate
-dateofpublishing;2010
-duration;4:46
-album;II
