@@ -105,11 +105,25 @@ info_label = Label(root, text="", font=("Helvetica", 14), bg="#0f1a2b", fg="whit
 info_label.place(x=10, y=450, width=400, height=100)
 
 # instances of buttons
-tublatanka_btn = Button(root, "img/tublatanka.png", lambda: load_artist_songs("tublatanka"))
-metallica_btn = Button(root, "img/metallica.png", lambda: load_artist_songs("metallica"))
-gunsnroses_btn = Button(root, "img/gunsnroses.png", lambda: load_artist_songs("gunsnroses"))
-radiohead_btn = Button(root, "img/radiohead.png", lambda: load_artist_songs("radiohead"))
-rhchp_btn = Button(root, "img/rhchp.png", lambda: load_artist_songs("rhchp"))
+tublatanka_btn = Button(root, 
+                        "img/tublatanka.png", 
+                        lambda: load_artist_songs("tublatanka"))
+
+metallica_btn = Button(root, 
+                       "img/metallica.png", 
+                       lambda: load_artist_songs("metallica"))
+
+gunsnroses_btn = Button(root, 
+                        "img/gunsnroses.png", 
+                        lambda: load_artist_songs("gunsnroses"))
+
+radiohead_btn = Button(root, 
+                       "img/radiohead.png", 
+                       lambda: load_artist_songs("radiohead"))
+
+rhchp_btn = Button(root, 
+                   "img/rhchp.png", 
+                   lambda: load_artist_songs("rhchp"))
 
 # placing buttons
 tublatanka_btn.place(x=800, y=100)
@@ -123,19 +137,29 @@ playlist_box = tk.Listbox(root, selectbackground="light grey", selectmode=tk.SIN
 playlist_box.place(x=10, y=10, width=400, height=400)
 
 # creating button objects and placing buttons + listbox
-play_btn = Button(root, "img/play.png", play_music)
+play_btn = Button(root, 
+                  "img/play.png", 
+                  play_music)
 play_btn.place(x=505, y=10)
 
-pause_btn = Button(root, "img/pause.png", pause_music)
+pause_btn = Button(root, 
+                   "img/pause.png", 
+                   pause_music)
 pause_btn.place(x=605, y=10)
 
-stop_btn = Button(root, "img/stop.png", stop_music)
+stop_btn = Button(root, 
+                  "img/stop.png", 
+                  stop_music)
 stop_btn.place(x=705, y=10)
 
-next_btn = Button(root, "img/forward.png", next_music)
+next_btn = Button(root, 
+                  "img/forward.png", 
+                  next_music)
 next_btn.place(x=705, y=10)
 
-prev_btn = Button(root, "img/backward.png", prev_music)
+prev_btn = Button(root, 
+                  "img/backward.png", 
+                  prev_music)
 prev_btn.place(x=805, y=10)
 
 playlist_box.bind("<ButtonRelease-1>", on_song_select)
