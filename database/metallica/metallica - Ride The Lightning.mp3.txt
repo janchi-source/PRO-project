@@ -1,0 +1,5 @@
+publisher;Metallica
+name;Ride The Lightning
+dateofpublishing;26.6.1984
+duration;6:36
+album;Ride the Lightning

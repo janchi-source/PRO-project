@@ -1,0 +1,5 @@
+publisher;Metallica
+name;Creeping Death
+dateofpublishing;26.6.1984
+duration;6:35
+album;Ride the Lightning

@@ -1,0 +1,5 @@
+publisher;Metallica
+name;Fade To Black
+dateofpublishing;26.6.1984
+duration;6:57
+album;Ride the Lightning

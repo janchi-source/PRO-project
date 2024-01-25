@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 
 # imports
 from tkinter import *
@@ -144,4 +142,3 @@ playlist_box.bind("<ButtonRelease-1>", on_song_select)
 
 # mainloop
 root.mainloop()
->>>>>>> Stashed changes

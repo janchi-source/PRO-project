@@ -1,0 +1,5 @@
+publisher;Metallica
+name;Fight Fire With Fire
+dateofpublishing;26.6.1984
+duration;4:44
+album;Ride the Lightning

@@ -1,0 +1,5 @@
+publisher;Metallica
+name;Trapped Under Ice
+dateofpublishing;26.6.1984
+duration;4:04
+album;Ride the Lightning
